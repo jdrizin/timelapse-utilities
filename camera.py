@@ -7,8 +7,8 @@ from re import findall
 #define parsers.
 parser = argparse.ArgumentParser(description='Control two Canon dSLR cameras of the same model using the ownername camera feature. Requires the gphoto2 binary in your $PATH. Images download in the current working directory', 
 	epilog='This will prompt you for the camera name from those detected. Capture begins after you hit Enter. Your camera may not be able to sustain 5s between shots, so play around with the interval setting') 
-parser.add_argument('frames', default='1440', help='number of frames to capture')
-parser.add_argument('interval', default='5', help='interval to wait between frames in seconds')
+parser.add_argument('-f', action='store', dest=frames, default='1440', help='number of frames to capture')
+parser.add_argument('-i', action='store', dest=interval, default='5', help='interval to wait between frames in seconds')
 parser.add_argument('-c', action='store_const', dest=command, default='--capture-image-and-download', const='--capture-image', help='keep the images on the card. only enable this if you have a large enough memory card in your camera')
 args = parser.parse_args()
 
