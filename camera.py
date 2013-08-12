@@ -12,8 +12,6 @@ parser.add_argument('-i', action='store', dest='interval', default='5', help='in
 parser.add_argument('-c', action='store_const', dest='command', default='--capture-image-and-download', const='--capture-image', help='keep the images on the card. only enable this if you have a large enough memory card in your camera')
 args = parser.parse_args()
 
-# functions
-
 # returns a list of usb port IDs for use with gphoto2
 def findCameraID( lines ):
 	return(findall(r"(usb:...,...)", lines))
@@ -28,10 +26,13 @@ cameras = check_output(['gphoto2', '--auto-detect']) #get the output from gphoto
 ids = findCameraID(cameras) #strip the usb:ids from raw gphoto2 output
 names = [getCameraName(id) for id in ids] #output a list of names
 
+if len(names) == 0:
+	exit("No cameras detected. Are they turned on and plugged in?")
+
 print 'detected cameras: ', [name[1] for name in names] #list the cameras
 
 cameraName = raw_input('Please type in the camera name: ') #prompt for camera name
 
 portName = [name[0] for name in names if name[1] == cameraName][0] #extract usb port name
 
-call(['gphoto2', '--port', portName, args.command, '-F', args.frames, '-I', args.interval] )
+call(['gphoto2', '--port', portName, args.command, '-F', args.frames, '-I', args.interval])
